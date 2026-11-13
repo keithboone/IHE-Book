@@ -53,7 +53,8 @@ EventIdentificationContents =
           ## Major failure, (reporting application now unavailable)
           "12"
     },
-    element EventOutcomeDescription { text }?
+    element EventOutcomeDescription { text }?,
+    element EventPurposeOfUse { CodedValueType }*
 # Define AuditSourceIdentification, used later
 #  Note: This includes one constraint that cannot be represented yet in RNC.  The use
 #        of a token other than the specified codes is permitted only if the codeSystemName

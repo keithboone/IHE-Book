@@ -1,0 +1,69 @@
+@startuml
+skinparam rectangleBorderColor #White
+rectangle psh as "Document Push" {
+component DS as "Document Source"
+component DR as "Document Recipient"
+interface ITI65 as "[ITI-65] Provide Document Bundle"
+DS -> ITI65
+ITI65 - DR
+}
+rectangle pll as "Document Pull" {
+skinparam Shadowing false
+component DC as "Document Consumer"
+component DP as "Document Responder"
+interface pull as "[ITI-66] Find Document Manifests\n[ITI-67] Find Document Reference\n[ITI-68] Retrieve Document"
+pull <-l- DC
+pull -r- DP
+}
+psh -d- pll  
+@enduml
+
+@startuml
+skinparam Shadowing false
+skinparam rectangleBorderColor #White
+rectangle psh as "Document Push" {
+component DS as "Document Source"
+component DR as "Document Recipient"
+interface ITI41 as "[ITI-41] Provide and Register Document Set-b"
+DS -> ITI41
+ITI41 - DR
+}
+@enduml
+
+
+@startuml
+skinparam Shadowing false
+skinparam rectangleBorderColor #White
+rectangle psh as "Document Push" {
+component DS as "Portable Media Creator"
+component DR as "Portable Media Importer"
+interface ITI32 as "[ITI-32] Distribute Document Set on Media"
+DS -> ITI32
+ITI32 - DR
+}
+@enduml
+
+
+@startuml
+hide stereotype
+skinparam rectangleBorderColor #White
+rectangle pll as "Document Pull" {
+skinparam Shadowing false
+skinparam component {
+  BorderStyle<<Optional>> dashed
+}
+
+component IG as "Initiating Gateway"
+component DP as "Responding Gateway"
+
+component DC <<Optional>> as "Document Consumer"
+
+interface pull1 as "[ITI-38] Cross Gateway Query\n[ITI-39] Cross Gateway Retrieve"
+interface pull2 as "[ITI-18] Registry Stored Query\n[ITI-39] Retrieve Document Set"
+pull1 <-l- IG
+pull1 -r- DP
+pull2 <.l. DC
+pull2 .r. IG
+
+}
+@enduml

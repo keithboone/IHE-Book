@@ -1,0 +1,18 @@
+@startuml
+component arr as "Audit Record Repository"
+component sa as "Secure Application"
+component sn as "Secure Node"
+interface iti20 as "[ITI-20] Record Audit Event"
+sa <--> sn : "[ITI-19] Node Authentication"
+arr -u- iti20
+rectangle {
+ component arr2 as "Audit Record Repository"
+ component arf as "Audit Record Forwarder"
+ arr2 -[hidden]- arf
+}
+
+arf -> iti20
+sn -> iti20
+sa -> iti20
+
+@enduml

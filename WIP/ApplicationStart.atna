@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AuditMessage>
+    <EventIdentification 
+        EventDateTime="2019-05-27T12:10:35Z" 
+        EventOutcomeIndicator="0">
+        <EventID csd-code="" 
+            codeSystemName="" 
+            originalText=""/>
+    </EventIdentification>
+    <ActiveParticipant UserID="" UserIsRequestor=""></ActiveParticipant>
+    <AuditSourceIdentification code="" AuditSourceID=""></AuditSourceIdentification>
+</AuditMessage>

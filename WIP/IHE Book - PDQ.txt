@@ -1,0 +1,173 @@
+@startuml
+title Patient Identity Cross Referencing
+component reg as "Patient Identity Source"
+component ehr as "Patient Identifier Cross Reference Consumer"
+interface iti44 <<V3>> as "[ITI-44] Patient Identity Feed V3" #orange
+interface iti30 <<V2>> as "[ITI-30] Patient Identity Management V2.5.1"
+interface iti08 <<V2>> as "[ITI-08] Patient Identity Feed"
+component mpi as "Patient Identifier Cross Reference Manager"
+interface iti09 <<V2>> as "[ITI-09] PIX Query"
+interface iti10 <<V2>> as "[ITI-10] PIX Update Notification"
+interface iti45 <<V3>> as "[ITI-45] PIXV3 Query" #orange
+interface iti46 <<V3>> as "[ITI-46] PIXV3 Update Notification" #orange
+interface iti83 <<FHIR>> as "[ITI-83] Mobile Patient Identifier Cross Reference Query" #red
+reg -down-> iti08
+reg -down-> iti44
+reg .down.> iti30
+mpi -up- iti08
+mpi -up- iti44
+mpi .up. iti30
+mpi -down- iti09
+mpi -down- iti45
+mpi -down- iti83
+mpi .down.> iti10
+mpi .down.> iti46
+ehr -up-> iti09
+ehr -up-> iti45
+ehr -up-> iti83
+ehr .up. iti10
+ehr .up. iti46
+@enduml
+
+@startuml
+title Patient Demographics Query (PDQ)
+skinparam Shadowing false
+skinparam RectangleBorderColor #white
+together {
+interface iti22 as "[ITI-22] Patient Demographics and Visit Query"
+interface iti21 as "[ITI-21] Patient Demographics Query"
+}
+
+component cl as "Patient Demographics Consumer"
+component sv as "Patient Demographics Supplier"
+
+
+cl -u-> iti21
+cl .u.> iti22
+iti21 -u- sv 
+iti22 .u. sv  
+
+@enduml
+
+@startuml
+title Patient Demographics Query (PDQV3)
+skinparam Shadowing false
+skinparam RectangleBorderColor #white
+interface iti47 as "[ITI-47] Patient Demographics Query V3"
+
+component cl as "Patient Demographics Consumer"
+component sv as "Patient Demographics Supplier"
+
+
+cl -u-> iti47
+
+iti47 -u- sv 
+
+@enduml
+
+@startuml
+title Patient Demographics Query for Mobile (PDQm)
+skinparam Shadowing false
+skinparam RectangleBorderColor #white
+interface iti78 as "[ITI-78] Mobile Patient Demographics Query"
+
+component cl as "Patient Demographics Consumer"
+component sv as "Patient Demographics Supplier"
+
+
+cl -u-> iti78
+
+iti78 -u- sv 
+
+@enduml
+
+@startuml
+skinparam Shadowing false
+rectangle v2 <<V2>> as "Typical MPI Implementation" {
+skinparam RectangleBorderColor #white
+interface iti08 as "[ITI-08] Patient Identity Feed"
+interface iti30 as "[ITI-30] Patient Identity Management V2.5.1"
+interface iti10 as "[ITI-10] PIX Update Notification"
+interface iti09 as "[ITI-09] PIX Query"
+interface iti22 as "[ITI-22] Patient Demographics and Visit Query"
+interface iti21 as "[ITI-21] Patient Demographics Query"
+interface iti47 as "[ITI-47] Patient Demographics Query V3"
+interface iti78 as "[ITI-78] Mobile Patient Demographics Query"
+
+iti08 -[hidden]- iti30
+iti30 -[hidden]- iti10
+iti10 -[hidden]- iti09
+iti09 -[hidden]- iti22
+iti22 -[hidden]- iti21
+iti21 -[hidden]- iti47
+iti47 -[hidden]- iti78
+}
+
+component cl as "MPI Client"
+component sv as "MPI Server"
+
+cl -[hidden]r- v2
+v2 -[hidden]r- sv 
+
+iti08 -r- cl 
+iti30 .r. cl
+iti08 <-r- sv 
+iti30 <.r. sv  
+iti09 -r- sv 
+iti10 <.r. sv
+iti09 <-r- cl 
+iti10 .r. cl 
+iti22 <.r. sv
+iti21 <-r- sv
+iti47 <-r- sv
+iti78 <-r- sv
+iti22 .r. cl
+iti21 -r- cl
+iti47 -r- cl
+iti78 -r- cl
+
+@enduml
+
+
+
+@startuml
+skinparam Shadowing false
+rectangle v3 <<V3>> as "Typical PIX Implementation" {
+skinparam RectangleBorderColor #white
+interface iti44 as "[ITI-44] Patient Identity Feed V3" #orange
+interface iti45 as "[ITI-45] PIXV3 Query" #orange
+interface iti46 as "[ITI-46] PIXV3 Update Notification" #orange
+
+
+iti44 -[hidden]- iti46
+iti46 -[hidden]- iti45
+}
+
+component cl as "PIX Client"
+component sv as "PIX Server"
+
+iti44 -r- sv 
+iti45 -r- sv 
+iti46 <.r. sv
+
+iti44 -l-> cl 
+iti45 <-l- cl 
+iti46 .l. cl 
+
+@enduml
+
+@startuml
+rectangle box <<FHIR>> as "Typical PIX Implementation"  {
+skinparam Shadowing false
+skinparam RectangleBorderColor #white
+skinparam DefaultTextAlignment center
+interface iti83 as "[ITI-83]\nMobile PatientIdentifier\nCross Reference Query" #red
+
+component cl as "PIX Client"
+component sv as "PIX Server"
+
+cl -r-> iti83   
+sv -l- iti83  
+
+}
+@enduml
